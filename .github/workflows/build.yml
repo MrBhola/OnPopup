@@ -38,7 +38,9 @@ jobs:
         run: npm ci
 
       - name: Package Application
-        run: npm run make
+        run: |
+          DEBUG=electron-forge:* npm run make
+          ls -laR out/ > out_contents.txt || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -46,7 +48,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: make-artifacts-${{ matrix.os }}
-          path: out/make/
+          path: |
+            out/
+            out_contents.txt
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
