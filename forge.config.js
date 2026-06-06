@@ -27,6 +27,14 @@ module.exports = {
         icon: './assets/icon.icns',
         overwrite: true,
       },
+    },
+    {
+      name: '@electron-forge/maker-deb',
+      config: {},
+    },
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {},
     }
   ]
 };
