@@ -40,6 +40,12 @@ jobs:
       - name: Package Application
         run: npm run make
 
+      - name: Upload Artifacts for Debugging
+        uses: actions/upload-artifact@v4
+        with:
+          name: make-artifacts-${{ matrix.os }}
+          path: out/make/
+
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
