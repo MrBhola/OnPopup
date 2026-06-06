@@ -2,8 +2,9 @@
 
 module.exports = {
   packagerConfig: {
-    name: process.env.GITHUB_RUN_NUMBER ? `OnPopup-${process.env.GITHUB_RUN_NUMBER}` : 'OnPopup',
-    appBundleId: process.env.GITHUB_RUN_NUMBER ? `com.onpopup.app.run${process.env.GITHUB_RUN_NUMBER}` : 'com.onpopup.app',
+    name: 'OnPopup',
+    executableName: 'OnPopup',
+    appBundleId: 'com.onpopup.app',
     asar: true,
     icon: './assets/icon',
   },
@@ -23,18 +24,26 @@ module.exports = {
     {
       name: '@electron-forge/maker-dmg',
       config: {
-        name: process.env.GITHUB_RUN_NUMBER ? `OnPopup-${process.env.GITHUB_RUN_NUMBER} Installation` : 'OnPopup Installation',
+        name: 'OnPopup Installation',
         icon: './assets/icon.icns',
         overwrite: true,
       },
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {},
+      config: {
+        options: {
+          bin: 'OnPopup'
+        }
+      },
     },
     {
       name: '@electron-forge/maker-rpm',
-      config: {},
+      config: {
+        options: {
+          bin: 'OnPopup'
+        }
+      },
     }
   ]
 };
