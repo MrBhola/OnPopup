@@ -39,8 +39,8 @@ jobs:
 
       - name: Package Application
         run: |
-          DEBUG=electron-forge:* npm run make
-          ls -laR out/ > out_contents.txt || true
+          DEBUG=electron-forge:* npm run make > make_log.txt 2>&1 || true
+          ls -laR out/ >> make_log.txt 2>&1 || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -50,7 +50,7 @@ jobs:
           name: make-artifacts-${{ matrix.os }}
           path: |
             out/
-            out_contents.txt
+            make_log.txt
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
