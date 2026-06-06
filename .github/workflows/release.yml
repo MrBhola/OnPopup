@@ -40,17 +40,26 @@ jobs:
       - name: Package Application
         run: npm run make
 
+      - name: Debug Output Directory
+        run: |
+          ls -laR out/ > debug-${{ matrix.os }}.txt || echo "out directory does not exist" >> debug-${{ matrix.os }}.txt
+          find . -name "*.dmg" -o -name "*.zip" -o -name "*.exe" >> debug-${{ matrix.os }}.txt
+          cat debug-${{ matrix.os }}.txt
+
       - name: Upload Artifacts for Debugging
         uses: actions/upload-artifact@v4
         with:
           name: make-artifacts-${{ matrix.os }}
-          path: out/make/
+          path: |
+            out/make/
+            debug-${{ matrix.os }}.txt
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
+            debug-*.txt
             out/make/**/*.dmg
             out/make/*.dmg
             out/make/**/*.zip
