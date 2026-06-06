@@ -1,4 +1,4 @@
-name: Build and Release
+name: Release OnPopup
 
 on:
   push:
@@ -18,6 +18,9 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -31,7 +34,7 @@ jobs:
       - name: Install Linux Build Dependencies
         if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt-get update || true
+          sudo apt-get update
           sudo apt-get install -y fakeroot dpkg rpm
 
       - name: Install Dependencies
@@ -39,16 +42,6 @@ jobs:
 
       - name: Package Application
         run: npm run make
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: make-artifacts-${{ matrix.os }}
-          path: |
-            out/
-            make_log.txt
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
@@ -56,14 +49,9 @@ jobs:
         with:
           files: |
             out/make/**/*.dmg
-            out/make/*.dmg
             out/make/**/*.zip
-            out/make/*.zip
             out/make/**/*.exe
-            out/make/*.exe
             out/make/**/*.deb
-            out/make/*.deb
             out/make/**/*.rpm
-            out/make/*.rpm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
