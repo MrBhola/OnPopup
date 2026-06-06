@@ -38,32 +38,13 @@ jobs:
         run: npm ci
 
       - name: Package Application
-        run: DEBUG=electron-packager,electron-forge:* npm run make > make_log.txt 2>&1 || true
-
-      - name: Debug Output Directory
-        run: |
-          echo "=== MAKE LOG ===" > debug-${{ matrix.os }}.txt
-          cat make_log.txt >> debug-${{ matrix.os }}.txt || echo "No make log" >> debug-${{ matrix.os }}.txt
-          echo "=== DIRECTORY STRUCTURE ===" >> debug-${{ matrix.os }}.txt
-          ls -laR out/ >> debug-${{ matrix.os }}.txt || echo "out directory does not exist" >> debug-${{ matrix.os }}.txt
-          echo "=== FOUND PACKAGES ===" >> debug-${{ matrix.os }}.txt
-          find . -name "*.dmg" -o -name "*.zip" -o -name "*.exe" >> debug-${{ matrix.os }}.txt
-          cat debug-${{ matrix.os }}.txt
-
-      - name: Upload Artifacts for Debugging
-        uses: actions/upload-artifact@v4
-        with:
-          name: make-artifacts-${{ matrix.os }}
-          path: |
-            out/make/
-            debug-${{ matrix.os }}.txt
+        run: npm run make
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            debug-*.txt
             out/make/**/*.dmg
             out/make/*.dmg
             out/make/**/*.zip
