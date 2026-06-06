@@ -38,7 +38,7 @@ jobs:
         run: npm ci
 
       - name: Package Application
-        run: npm run make > make_log.txt 2>&1 || true
+        run: DEBUG=electron-packager,electron-forge:* npm run make > make_log.txt 2>&1 || true
 
       - name: Debug Output Directory
         run: |
