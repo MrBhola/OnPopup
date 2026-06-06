@@ -38,11 +38,15 @@ jobs:
         run: npm ci
 
       - name: Package Application
-        run: npm run make
+        run: npm run make > make_log.txt 2>&1 || true
 
       - name: Debug Output Directory
         run: |
-          ls -laR out/ > debug-${{ matrix.os }}.txt || echo "out directory does not exist" >> debug-${{ matrix.os }}.txt
+          echo "=== MAKE LOG ===" > debug-${{ matrix.os }}.txt
+          cat make_log.txt >> debug-${{ matrix.os }}.txt || echo "No make log" >> debug-${{ matrix.os }}.txt
+          echo "=== DIRECTORY STRUCTURE ===" >> debug-${{ matrix.os }}.txt
+          ls -laR out/ >> debug-${{ matrix.os }}.txt || echo "out directory does not exist" >> debug-${{ matrix.os }}.txt
+          echo "=== FOUND PACKAGES ===" >> debug-${{ matrix.os }}.txt
           find . -name "*.dmg" -o -name "*.zip" -o -name "*.exe" >> debug-${{ matrix.os }}.txt
           cat debug-${{ matrix.os }}.txt
 
