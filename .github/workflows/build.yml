@@ -46,6 +46,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEBUG: electron-forge:*
 
+      - name: Commit Logs to Branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b debug-logs-${{ matrix.os }}
+          git add make_log.txt
+          git commit -m "chore: add debug logs" || true
+          git push origin debug-logs-${{ matrix.os }} -f
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
