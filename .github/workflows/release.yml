@@ -46,9 +46,14 @@ jobs:
         with:
           files: |
             out/make/**/*.dmg
+            out/make/*.dmg
             out/make/**/*.zip
+            out/make/*.zip
             out/make/**/*.exe
+            out/make/*.exe
             out/make/**/*.deb
+            out/make/*.deb
             out/make/**/*.rpm
+            out/make/*.rpm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
