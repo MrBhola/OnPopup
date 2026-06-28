@@ -10,7 +10,9 @@ Designed for maximum productivity, OnPopup is completely keyboard-driven. It liv
 
 Watch the step-by-step installation and demo guide:
 
-<iframe width="955" height="620" src="https://www.youtube.com/embed/-DNWEMGhq6o" title="Translate selected text and clipboard management tool for Mac |Windows|Linux| OnPopup" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<a href="https://www.youtube.com/watch?v=-DNWEMGhq6o" target="_blank">
+  <img src="https://img.youtube.com/vi/-DNWEMGhq6o/maxresdefault.jpg" alt="OnPopup Installation & Demo Guide" width="1280" height="720" />
+</a>
 
 You can also watch the video directly on YouTube: [OnPopup Installation & Demo Guide](https://youtu.be/-DNWEMGhq6o)
 
