@@ -158,7 +158,7 @@ ipcMain.handle('copy-to-clipboard', (event, text) => {
 
 ipcMain.handle('open-external', async (event, url) => {
   try {
-    if (url.startsWith('https://github.com/')) {
+    if (url.startsWith('https://github.com/') || url.startsWith('https://youtu.be/') || url.startsWith('https://www.youtube.com/')) {
       await shell.openExternal(url);
       return true;
     }

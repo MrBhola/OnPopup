@@ -22,6 +22,7 @@ const copyIcon = document.getElementById('copy-icon');
 const checkIcon = document.getElementById('check-icon');
 const clearBtn = document.getElementById('clear-btn');
 const githubLink = document.getElementById('github-link');
+const youtubeLink = document.getElementById('youtube-link');
 
 // Clipboard Selectors
 const clipboardDrawerEl = document.getElementById('clipboard-drawer');
@@ -213,6 +214,13 @@ async function init() {
     e.preventDefault();
     window.electronAPI.openExternal('https://github.com/MrBhola/translaPop#transpop-');
   });
+
+  if (youtubeLink) {
+    youtubeLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.electronAPI.openExternal('https://youtu.be/-DNWEMGhq6o');
+    });
+  }
   
   copyBtn.addEventListener('click', copyTranslation);
   speakBtn.addEventListener('click', speakTranslation);

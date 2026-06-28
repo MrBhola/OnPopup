@@ -6,6 +6,16 @@ Designed for maximum productivity, OnPopup is completely keyboard-driven. It liv
 
 ---
 
+## 🎥 YouTube Installation & Demo Guide
+
+Watch the step-by-step installation and demo guide:
+
+<iframe width="955" height="620" src="https://www.youtube.com/embed/-DNWEMGhq6o" title="Translate selected text and clipboard management tool for Mac |Windows|Linux| OnPopup" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+You can also watch the video directly on YouTube: [OnPopup Installation & Demo Guide](https://youtu.be/-DNWEMGhq6o)
+
+---
+
 ## 🎯 Objective
 
 Modern workflows require constant switching between copy-pasting text, translating phrases, and configuring api interfaces. **OnPopup** was built to solve this by providing:
@@ -65,7 +75,9 @@ Modern workflows require constant switching between copy-pasting text, translati
 * **npm** (Node package manager)
 * **Swift Compiler (`swiftc`)** *(macOS packaging only)*: The app compiles a helper binary (`assets/copy-helper.swift`) on macOS during build time to ensure reliable native paste injection.
 
-### Installation
+### Installation & Guide
+For a visual step-by-step setup walkthrough, refer to the [YouTube Installation Guide](https://youtu.be/-DNWEMGhq6o).
+
 1. Clone the repository:
    ```bash
    git clone <your-repository-url>
