@@ -17,10 +17,24 @@ function initClipboard(getMainWindow) {
 
 function updateLastActiveApp() {
   try {
-    const activeApp = execSync(`osascript -e 'tell application "System Events" to name of first application process whose frontmost is true'`).toString().trim();
-    const ignoredApps = ['OnPopup', 'onpopup', 'TransPop', 'transpop', 'Electron', 'System Events', 'SystemUIServer', 'loginwindow'];
-    if (activeApp && !ignoredApps.includes(activeApp)) {
-      lastActiveApp = activeApp.replace(/"/g, '');
+    const output = execSync(`osascript -e 'tell application "System Events" to tell (first application process whose frontmost is true) to return {name, unix id}'`).toString().trim();
+    const match = output.match(/^(.+),\s*(\d+)$/);
+    if (match) {
+      const activeApp = match[1].trim();
+      const activePid = parseInt(match[2].trim(), 10);
+
+      // Do not capture our own application instance
+      if (activePid === process.pid) {
+        return;
+      }
+
+      const ignoredApps = ['System Events', 'SystemUIServer', 'loginwindow'];
+      if (activeApp && !ignoredApps.includes(activeApp)) {
+        lastActiveApp = {
+          name: activeApp.replace(/"/g, ''),
+          pid: activePid
+        };
+      }
     }
   } catch (err) {
     console.error('Failed to get active app:', err);
@@ -171,9 +185,13 @@ async function simulatePaste() {
 
   if (process.platform === 'darwin') {
     try {
-      if (lastActiveApp) {
+      if (lastActiveApp && lastActiveApp.name) {
         const appleScript = `
-          tell application "${lastActiveApp}" to activate
+          try
+            tell application "System Events" to set frontmost of first application process whose unix id is ${lastActiveApp.pid} to true
+          on error
+            tell application "${lastActiveApp.name}" to activate
+          end try
           delay 0.1
           tell application "System Events" to keystroke "v" using {command down}
         `;
@@ -209,7 +227,7 @@ function getClipboardHistory() {
 }
 
 function getLastActiveApp() {
-  return lastActiveApp;
+  return lastActiveApp ? lastActiveApp.name : null;
 }
 
 module.exports = {
