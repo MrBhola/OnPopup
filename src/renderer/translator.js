@@ -121,7 +121,15 @@ export async function performTranslation(text) {
         <div class="error-message">${err.message || 'An unknown API error occurred.'}</div>
     `;
 
-    if (settings.service === 'google' && text.length > 1500) {
+    const isRateLimited = err.status === 429 || (err.message && err.message.includes('429'));
+
+    if (isRateLimited) {
+      errorHtml += `
+        <div class="error-tip">
+          <strong>Tip:</strong> Google Translate rate-limited your request (Error 429: Too Many Requests / Automated Query Limit). Please wait a few seconds before trying again, or configure <strong>Gemini AI</strong> in Settings for higher limit stability.
+        </div>
+      `;
+    } else if (settings.service === 'google' && text.length > 1500) {
       errorHtml += `
         <div class="error-tip">
           <strong>Tip:</strong> The selected text is very long (${text.length} characters). Google's free translation service has strict length limits. Try selecting a smaller section of text, or configure <strong>Gemini AI</strong> in Settings to translate larger documents.

@@ -128,9 +128,32 @@ async function translate({ text, service, targetLang, apiKey }) {
         if (!result) throw new Error('Invalid response structure from Gemini API');
         return { translation: result.trim(), detectedLang: null };
       } else {
-        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetL}&dt=t&q=${encodeURIComponent(text)}`;
+        const fetchGoogleTranslate = async (clientParam) => {
+          const url = `https://translate.googleapis.com/translate_a/single?client=${clientParam}&sl=auto&tl=${targetL}&dt=t&q=${encodeURIComponent(text)}`;
+          return await fetch(url, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+              'Accept': '*/*',
+              'Accept-Language': 'en-US,en;q=0.9',
+              'Referer': 'https://translate.google.com/'
+            }
+          });
+        };
 
-        const response = await fetch(url);
+        let response = await fetchGoogleTranslate('gtx');
+
+        // Fallback to dict-chrome-ex endpoint if 429 or 403 occurs
+        if (response.status === 429 || response.status === 403) {
+          await new Promise(r => setTimeout(r, 500));
+          response = await fetchGoogleTranslate('dict-chrome-ex');
+        }
+
+        // Additional retry attempt after short delay if still 429
+        if (response.status === 429) {
+          await new Promise(r => setTimeout(r, 1000));
+          response = await fetchGoogleTranslate('dict-chrome-ex');
+        }
+
         if (!response.ok) {
           const error = new Error(`Google Translate API returned status ${response.status}`);
           error.status = response.status;
